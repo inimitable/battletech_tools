@@ -8,11 +8,11 @@ ONLY_DIGITS = regex('\d+')
 __ACCESSOR_TEMPLATE = \
     """
     @property
-    def {name}(self):
+    def {name}(self) -> {type}:
         return self.data{accessors}
     
     @{name}.setter
-    def {name}(self, value):
+    def {name}(self, value: {type}):
         self.data{accessors} = {type}(value) 
     """
 
@@ -74,8 +74,10 @@ def build_accessor(accessor_format: str):
 
 
 if __name__ == '__main__':
-    feeder = LineFeeder()
-    for name, accessor_fmt in __ACCESSORS.items():
-        accessor, accessor_type = build_accessor(accessor_fmt)
-        feeder.add(__ACCESSOR_TEMPLATE.format(name=name, accessors=accessor, type=accessor_type))
-    feeder.print()
+    pass
+    # feeder = LineFeeder()
+    # for name, accessor_fmt in __ACCESSORS.items():
+    #     accessor, accessor_type = build_accessor(accessor_fmt)
+    #     feeder.add(__ACCESSOR_TEMPLATE.format(name=name, accessors=accessor, type=accessor_type))
+    # feeder.print()
+

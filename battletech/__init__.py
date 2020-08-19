@@ -1,11 +1,25 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
+from pprint import pprint
 from typing import Tuple, Callable, TypeVar, List, NewType as Type
 from pathlib import Path
 import json
 from textwrap import dedent
 
 from battletech.starsystem import StarSystem
+from os.path import expanduser, expandvars
+from sys import platform
+
+if platform == 'darwin':
+    DATA_BASE = Path(r'/Users/rob/Library/Application Support/Steam/steamapps/'
+                     r'common/BATTLETECH/BattleTech.app/Contents/Resources/Data')
+else:
+    DATA_BASE = Path(r'S:\Steam\Steamapps\common\BATTLETECH\BattleTech_Data')
+
+
+def expandall(p: str, Path):
+    return expandvars(expanduser(str(p)))
+
 
 # Typing
 S = TypeVar('S', list, StarSystem)
@@ -13,8 +27,7 @@ UserRequest = Type('UserRequest', str)
 PlanetName = Type('PlanetName', str)
 StarSystemResult = Tuple[S, Callable[[S], List[StarSystem]]]
 
-DATA_BASE = Path(r'S:\Steam\Steamapps\common\BATTLETECH\BattleTech_Data')
-DATA_DIR = DATA_BASE  / "\StreamingAssets\data\starsystem"
+DATA_DIR = Path(DATA_BASE / "StreamingAssets/data/starsystem")
 ORIG_DATA_PKL = DATA_DIR / 'orig.pkl'
 
 
@@ -45,16 +58,18 @@ def parse_systems_request(request: str):
 if __name__ == '__main__':
 
     # Select our desired system(s)
+    biomes = set()
     user_input = input(dedent("""Please select the system(s) you wish to modify.
     Systems can be comma-separated to act on many different systems, may be matched via regex with
     an input starting with /, or with * for all. 
-    \tEnter the system(s) to modify. > ')"""))
+    \tEnter the system(s) to modify. > """))
     selected_systems = parse_systems_request(user_input)
     for system in selected_systems:
         system: StarSystem
-        with system:
-            if 40 >= system.number_of_shop_items <= 6:
-                system.number_of_shop_items *= 2
-                system.add_markets()
-        system.add_markets()
-        system.save()
+        # with system:
+            # if 20 >= system.number_of_shop_items <= 6:
+            #     system.number_of_shop_items *= 2
+            #     system.add_markets()
+            # system.add_markets()
+        biomes |= set(system.biomes)
+    pprint(biomes)

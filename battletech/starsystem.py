@@ -19,11 +19,11 @@ class StarSystem:
         self._difficulty = d["DifficultyList"]
 
     @classmethod
-    def _from_dict(cls, data: dict):
+    def from_dict(cls, data: dict):
         return cls(**data)
 
     @classmethod
-    def _from_file(cls, file: Path):
+    def from_file(cls, file: Path):
         system_data = json.load(file.open())
         return cls(system_data, file)
 
@@ -36,7 +36,7 @@ class StarSystem:
         self.data["Description"]["Name"] = str(value)
 
     @property
-    def biomes(self):
+    def biomes(self) -> list:
         return self.data["SupportedBiomes"]
 
     @biomes.setter
