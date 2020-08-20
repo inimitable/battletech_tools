@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
-from battletech.update_ss2 import build_accessor
 import pytest
+
+from battletech.update_ss2 import build_accessor
 
 
 @pytest.mark.parametrize([

@@ -1,19 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
-BIOMES = {
-    'Badlands': 'badlandsParched',
-    'Desert': 'desertParched',
-    'Fall Highlands': 'highlandsFall',
-    'Spring Highlands': 'highlandsSpring',
-    'Jungle': 'jungleTropical',
-    'Fall Lowlands': 'lowlandsFall',
-    'Spring Lowlands': 'lowlandsSpring',
-    'Lunar': 'lunarVacuum',
-    'Martian': 'martianVacuum',
-    'Polar': 'polarFrozen',
-    'Tundra': 'tundraFrozen',
-    'urbanHighTech': 'urbanHighTech'
-    }
+from toml import load
+from pathlib import Path
 
-ALL_BIOMES = [v for _, v in BIOMES.items()]
+with open(Path(__file__).parent / 'values.toml') as f:
+    BIOMES_BY_NAME = load(f)['Biomes']
+
+ALL_BIOMES = [v for _, v in BIOMES_BY_NAME.items()]
+
+if __name__ == '__main__':
+    print(BIOMES_BY_NAME)

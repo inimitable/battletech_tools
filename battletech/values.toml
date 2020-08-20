@@ -1,0 +1,27 @@
+
+[Biomes]
+"Badlands" = "badlandsParched"
+"Desert" = "desertParched"
+"Fall Highlands" = "highlandsFall"
+"Spring Highlands" = "highlandsSpring"
+"Jungle" = "jungleTropical"
+"Fall Lowlands" = "lowlandsFall"
+"Spring Lowlands" = "lowlandsSpring"
+"Lunar" = "lunarVacuum"
+"Martian" = "martianVacuum"
+"Polar" = "polarFrozen"
+"Tundra" = "tundraFrozen"
+"urbanHighTech" = "urbanHighTech"
+
+[Factions]
+"Aurigan Pirates" = "AuriganPirates"
+"Aurigan Restoration" = "AuriganRestoration"
+"ComStar" = "ComStar"
+"Davion" = "Davion"
+"Kurita" = "Kurita"
+"Liao" = "Liao"
+"Locals" = "Locals"
+"Magistracy Of Canopus" = "MagistracyOfCanopus"
+"Marik" = "Marik"
+"Steiner" = "Steiner"
+"Taurian Concordat" = "TaurianConcordat"
