@@ -2,6 +2,7 @@ import io
 
 from battletech.starsystem import StarSystem, get_all_systems
 from battletech.biomes import BIOMES_BY_NAME
+from battletech.factions import NAMES_BY_FACTION
 from json import load, dump
 
 bad_biomes = [BIOMES_BY_NAME['Lunar']]
@@ -15,33 +16,33 @@ employers = set()
 for system in systems:
     with system:  # StarSystem
 
-        for faction in 'Liao,Locals'.split(','):
-            if faction not in system.targets:
-                system.targets = list(set(system.targets) | {faction})
-
-        if 'Locals' in system.employers and len(system.employers) > 2:
-            system.employers.remove('Locals')
-
-        for bad_biome in bad_biomes:
-            if bad_biome in system.biomes:
-                try:
-                    system.biomes.remove(bad_biomes)
-                except ValueError:
-                    pass
-        if 'polarFrozen' not in system.biomes:
-            system.biomes.append('polarFrozen')
-
-        system.jump_distance = 1
-
-        system.add_markets()
-        system.shop_specials = min(20, system.shop_specials * 2)
+        # for faction in 'Liao,Locals'.split(','):
+        #     if faction not in system.targets:
+        #         system.targets = list(set(system.targets) | {faction})
+        #
+        # if 'Locals' in system.employers and len(system.employers) > 2:
+        #     system.employers.remove('Locals')
+        #
+        # for bad_biome in bad_biomes:
+        #     if bad_biome in system.biomes:
+        #         try:
+        #             system.biomes.remove(bad_biomes)
+        #         except ValueError:
+        #             pass
+        # if 'polarFrozen' not in system.biomes:
+        #     system.biomes.append('polarFrozen')
+        #
+        # system.jump_distance = 1
+        #
+        # system.add_markets()
+        # system.shop_specials = min(20, system.shop_specials * 2)
 
         print(f"""{system.name} ({system.jump_distance})
 
     HOSTILES:
-    {', '.join(system.targets)}          
+    {', '.join([NAMES_BY_FACTION[x] for x in system.targets])}          
     FRIENDS:
-    {', '.join(system.employers)}
+    {', '.join([NAMES_BY_FACTION[x] for x in system.employers])}
     """)
 
 # with open('..\\data\\data.json', 'w') as f:

@@ -4,6 +4,7 @@ from pathlib import Path
 with open(Path(__file__).parent / 'values.toml') as f:
     FACTIONS_BY_NAME = load(f)['Factions']
 
+NAMES_BY_FACTION = {v: k for k, v in FACTIONS_BY_NAME.items()}
 FACTIONS = [v for _, v in FACTIONS_BY_NAME.items()]
 
 PREFERRED_EMPLOYERS = ['MagistracyOfCanopus', 'Davion', 'Marik', 'ComStar', 'Steiner']
