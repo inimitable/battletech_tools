@@ -1,13 +1,48 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
-from toml import load
-from pathlib import Path
+from dataclasses import dataclass
+from enum import Enum
+from pprint import pprint
 
-with open(Path(__file__).parent / 'values.toml') as f:
-    BIOMES_BY_NAME = load(f)['Biomes']
 
-ALL_BIOMES = [v for _, v in BIOMES_BY_NAME.items()]
+class Climate(Enum):
+    COLD = "cold"
+    WET = "wet"
+    NORMAL = "normal"
+    HOT = "hot"
+    MARTIAN = "martian"
+    VACUUM = "vacuum"
 
-if __name__ == '__main__':
-    print(BIOMES_BY_NAME)
+    def __repr__(self):
+        return f"{self.name}"
+
+
+__biomes = {
+    "Badlands": ("badlandsParched", Climate.HOT),
+    "Desert": ("desertParched", Climate.HOT),
+    "Fall Highlands": ("highlandsFall", Climate.NORMAL),
+    "Spring Highlands": ("highlandsSpring", Climate.NORMAL),
+    "Jungle": ("jungleTropical", Climate.WET),
+    "Fall Lowlands": ("lowlandsFall", Climate.NORMAL),
+    "Spring Lowlands": ("lowlandsSpring", Climate.NORMAL),
+    "Lunar": ("lunarVacuum", Climate.VACUUM),
+    "Martian": ("martianVacuum", Climate.MARTIAN),
+    "Polar": ("polarFrozen", Climate.COLD),
+    "Tundra": ("tundraFrozen", Climate.COLD),
+    "urbanHighTech": ("urbanHighTech", Climate.NORMAL),
+}
+
+
+@dataclass
+class Biome:
+    name: str
+    value: str
+    climate: Climate
+
+
+BIOMES = {name: Biome(name, *data) for name, data in __biomes.items()}
+
+ALL_BIOMES = [biome.name for biome in BIOMES.values()]
+
+pprint(BIOMES)

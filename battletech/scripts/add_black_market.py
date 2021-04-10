@@ -5,7 +5,7 @@ from battletech.biomes import BIOMES_BY_NAME
 from battletech.factions import NAMES_BY_FACTION
 from json import load, dump
 
-bad_biomes = [BIOMES_BY_NAME['Lunar']]
+bad_biomes = [BIOMES_BY_NAME["Lunar"]]
 
 BLACK_MARKET = "itemCollection_faction_AuriganPirates"
 
@@ -37,13 +37,15 @@ for system in systems:
         # system.add_markets()
         # system.shop_specials = min(20, system.shop_specials * 2)
 
-        print(f"""{system.name} ({system.jump_distance})
+        print(
+            f"""{system.name} ({system.jump_distance})
 
     HOSTILES:
     {', '.join([NAMES_BY_FACTION[x] for x in system.targets])}          
     FRIENDS:
     {', '.join([NAMES_BY_FACTION[x] for x in system.employers])}
-    """)
+    """
+        )
 
 # with open('..\\data\\data.json', 'w') as f:
 #     try:

@@ -7,17 +7,17 @@ from pathlib import Path
 from shutil import copy
 from sys import platform
 from typing import Callable, List, NewType as Type, Tuple, TypeVar
+from biomes import BIOMES, Climate
 
 _BLACK_MARKET = "itemCollection_faction_AuriganPirates"
 
 
 class StarSystem:
-
     def __init__(self, system_data: dict, file: Path):
         self.data = {**system_data}
         d = self.data
         self.file = file
-        self._bak_file = self.file.parent / (self.file.name + '.bak')
+        self._bak_file = self.file.parent / (self.file.name + ".bak")
         self.name = d["Description"]["Name"]
         self.employers = d["contractEmployerIDs"]
         self.targets = d["contractTargetIDs"]
@@ -175,14 +175,14 @@ class StarSystem:
         return self.__dict__
 
     def __str__(self):
-        return f"Star system \"{self.name}\" (difficulty {(self.difficulty_high) / 2:.1f}), {self.shop_specials} items"
+        return f'Star system "{self.name}" (difficulty {self.difficulty_high / 2:.1f}), {self.shop_specials} items'
 
     def save(self, safe=True):
         """Super-safe saving."""
         if not safe:
             return json.dump(self.data, self.file.open(), indent=2)
 
-        json.dump(self.data, self._bak_file.open('w'), indent=2)
+        json.dump(self.data, self._bak_file.open("w"), indent=2)
         self.file.unlink()  # unlink = delete
         copy(self._bak_file, self.file)
         if self.file.exists():
@@ -196,10 +196,10 @@ class StarSystem:
             self.save()
 
 
-if platform == 'darwin':
-    DATA_BASE = Path(r'/Users/rob/Desktop/starsystem')
+if platform == "darwin":
+    DATA_BASE = Path(r"/Users/rob/Desktop/starsystem")
 else:
-    DATA_BASE = Path(r'S:\Steam\Steamapps\common\BATTLETECH\BattleTech_Data')
+    DATA_BASE = Path(r"S:\Steam\Steamapps\common\BATTLETECH\BattleTech_Data")
 
 
 def expandall(p: str, Path):
@@ -207,22 +207,23 @@ def expandall(p: str, Path):
 
 
 # Typing
-S = TypeVar('S', list, StarSystem)
-UserRequest = Type('UserRequest', str)
+S = TypeVar("S", list, StarSystem)
+StarSystemName = Type("UserRequest", str)
 
 
 def parse_systems_request(request: str):
-    request = UserRequest(request.strip().casefold())
+    request = StarSystemName(request.strip().casefold())
     if request == "*":
         return get_all_systems()
     else:
         return [get_system(request)]
 
-PlanetName = Type('PlanetName', str)
+
+PlanetName = Type("PlanetName", str)
 StarSystemResult = Tuple[S, Callable[[S], List[StarSystem]]]
 
-DATA_DIR = Path(DATA_BASE )#/ "StreamingAssets/data/starsystem")
-ORIG_DATA_PKL = DATA_DIR / 'orig.pkl'
+DATA_DIR = Path(DATA_BASE) / "StreamingAssets/data/starsystem"
+ORIG_DATA_PKL = DATA_DIR / "orig.pkl"
 
 
 def get_all_systems() -> List[StarSystem]:
@@ -235,13 +236,20 @@ def get_all_systems() -> List[StarSystem]:
     return out
 
 
-def get_system(name: UserRequest):
+def get_system(name: StarSystemName):
     name = name.casefold()
     for file in DATA_DIR.iterdir():
         if name in file.name.casefold():
             return StarSystem.from_file(file)
 
 
-if __name__ == '__main__':
-    sys = get_system(UserRequest('Lyreton'))
-    print(sys)
+if __name__ == "__main__":
+    good_biomes = set()
+    for biome in BIOMES.values():
+        if biome.climate in [Climate.NORMAL, Climate.COLD, Climate.WET]:
+            good_biomes.add(biome.value)
+
+    for system in get_all_systems():
+
+        print(f"{system.name}: {system.difficulty_low} - {system.difficulty_high}")
+
