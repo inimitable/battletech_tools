@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 from re import compile as regex
 
-ONLY_DIGITS = regex("\d+")
+ONLY_DIGITS = regex("\\d+")
 
 __ACCESSOR_TEMPLATE = """
 @property
@@ -24,8 +24,8 @@ __ACCESSORS = {
         int,
         "DefaultDifficulty",
     ),
-    "difficulty_low": (int, "DifficultyList", 0),
-    "difficulty_high": (int, "DifficultyList", 1),
+    "difficulty_campaign": (int, "DifficultyList", 0),
+    "difficulty_career": (int, "DifficultyList", 1),
     "jump_distance": (
         int,
         "JumpDistance",

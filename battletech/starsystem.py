@@ -7,7 +7,7 @@ from pathlib import Path
 from shutil import copy
 from sys import platform
 from typing import Callable, List, NewType as Type, Tuple, TypeVar
-from biomes import BIOMES, Climate
+from battletech.biomes import BIOMES, Climate
 
 _BLACK_MARKET = "itemCollection_faction_AuriganPirates"
 
@@ -59,19 +59,19 @@ class StarSystem:
         self.data["DefaultDifficulty"] = int(value)
 
     @property
-    def difficulty_low(self) -> int:
+    def difficulty_campaign(self) -> int:
         return self.data["DifficultyList"][0]
 
-    @difficulty_low.setter
-    def difficulty_low(self, value: int):
+    @difficulty_campaign.setter
+    def difficulty_campaign(self, value: int):
         self.data["DifficultyList"][0] = int(value)
 
     @property
-    def difficulty_high(self) -> int:
+    def difficulty_career(self) -> int:
         return self.data["DifficultyList"][1]
 
-    @difficulty_high.setter
-    def difficulty_high(self, value: int):
+    @difficulty_career.setter
+    def difficulty_career(self, value: int):
         self.data["DifficultyList"][1] = int(value)
 
     @property
@@ -175,7 +175,7 @@ class StarSystem:
         return self.__dict__
 
     def __str__(self):
-        return f'Star system "{self.name}" (difficulty {self.difficulty_high / 2:.1f}), {self.shop_specials} items'
+        return f'Star system "{self.name}" (difficulty {self.difficulty_career / 2:.1f}), {self.shop_specials} items'
 
     def save(self, safe=True):
         """Super-safe saving."""
@@ -244,12 +244,16 @@ def get_system(name: StarSystemName):
 
 
 if __name__ == "__main__":
+    from battletech.factions import LIAO
+    from random import random
     good_biomes = set()
     for biome in BIOMES.values():
         if biome.climate in [Climate.NORMAL, Climate.COLD, Climate.WET]:
             good_biomes.add(biome.value)
 
     for system in get_all_systems():
-
-        print(f"{system.name}: {system.difficulty_low} - {system.difficulty_high}")
-
+        if system.owner == LIAO:
+            if system.difficulty_career <= 8 and random() > 0.5:
+                system.difficulty_career //= 2
+                system.save()
+                print(system)

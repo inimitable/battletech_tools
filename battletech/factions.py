@@ -54,15 +54,15 @@ PREFERRED_ENEMIES = ["Liao", "ComStar", "Kurita"]
 REQUIRED_ENEMIES = ["Locals"]
 
 
-def add_to(s: "StarSystem", p: str, v: any) -> list:
-    dat = getattr(s, p)
-    if p in dat:
-        return
+def add_to(s: "StarSystem", prop: str, v: any) -> list:
+    dat = getattr(s, prop)
+    if v in dat:
+        return dat
     if isinstance(dat, list):
         dat = set(dat)
         dat |= {v}
         dat = sorted(list(dat))
-        setattr(s, p, dat)
+        setattr(s, prop, dat)
         return dat
 
 

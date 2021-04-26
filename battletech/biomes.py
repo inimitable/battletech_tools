@@ -44,5 +44,3 @@ class Biome:
 BIOMES = {name: Biome(name, *data) for name, data in __biomes.items()}
 
 ALL_BIOMES = [biome.name for biome in BIOMES.values()]
-
-pprint(BIOMES)
